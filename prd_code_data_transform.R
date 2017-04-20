@@ -279,11 +279,11 @@ model.data.final <- model.data.imp
 
 
 # export final model dataset
-write.csv(model.data.final, "prd_code_data_transform.csv")
+write.csv(model.data.final, "prd_code_data_transform.csv", row.names = F)
 
 
 # export complete cases model dataset
-write.csv(model.data.cc, "prd_code_data_transform_cc.csv")
+write.csv(model.data.cc, "prd_code_data_transform_cc.csv", row.names = F)
 
 
 
