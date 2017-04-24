@@ -6,31 +6,36 @@ the r code has three components: extract, transform, and model. It is set up thi
 
 the extract component contains three files:
 
-(1) prd_code_data_extract.R
-(2) prd_code_data_extract_checks.R
-(3) prd_code_data_extract.csv
+	(1) prd_code_data_extract.R
+	(2) prd_code_data_extract_checks.R
+	(3) prd_code_data_extract.csv
+
 the transform component contains four files:
 
-(1) prd_code_data_transform.R
-(2) prd_code_data_transform_checks.R
-(3) prd_code_data_transform_cc.csv
-(4) prd_code_data_transform.csv
+	(1) prd_code_data_transform.R
+	(2) prd_code_data_transform_checks.R
+	(3) prd_code_data_transform_cc.csv
+	(4) prd_code_data_transform.csv
+
 the model component contains two files:
 
-(1) prd_code_model.R
-(2) prd_code_model_checks.R
-files ending in .R are R script files. file ending in _checks.R are the associated check files where code checks are stored.
+	(1) prd_code_model.R
+	(2) prd_code_model_checks.R
+
+files ending in .R are R script files. file ending in \_checks.R are the associated check files where code checks are stored.
 
 prd_code_data_extract.R requires the following R libraries:
 
 	library(RNHANES)
 	library(dplyr)
 	library(stringr)
+
 prd_code_data_transform.R requires the following R libraries:
 
 	library(readr)
 	library(dplyr)
 	library(mice)
+
 prd_code_model.R requires the following R libraries:
 
 	library(readr)
