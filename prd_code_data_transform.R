@@ -194,14 +194,14 @@ model.data <- model.data %>% mutate(bmi.cat =
 
 
 # create model feature dataset
-model.data <- model.data %>% select(outcome, age.cat, gender.label, race.cat, educ.cat,
-                                    hist.cat, bmi.cat, waist.value, bp.cat, chol.cat, 
+model.data <- model.data %>% select(outcome, age.value, gender.label, race.cat, educ.cat,
+                                    hist.cat, bmi.value, waist.value, bp.cat, chol.cat, 
                                     alc.value, smoke.cat, sleep.value)
 
 
 # rename features
 names(model.data) <- c("outcome", "age", "gender", "race", "education",
-                       "fam.hist.diabetes", "bmi.category", "waist.size", "high.blood.pressure", "high.cholesterol",
+                       "fam.hist.diabetes", "bmi", "waist.size", "high.blood.pressure", "high.cholesterol",
                        "alcohol.num.drinks", "smoker", "sleep.num.hours")
 
 
