@@ -15,6 +15,10 @@ library(ggplot2)
 model.data <- read_csv("https://raw.githubusercontent.com/95845k/project_rnhanes_dm/master/prd_code_data_transform.csv")
 
 
+# re-class variable from integer to numeric
+model.data$age <- as.numeric(model.data$age)
+
+
 # subset numeric columns
 model.data.num <- model.data[, which(sapply(model.data, FUN = class) == "numeric")]
 
@@ -165,12 +169,12 @@ confmatrix.dtree <- with(pred.dtree, table(prediction.reorder, outcome.reorder))
 
 # calculate accuracy
 {
-  if (dim(confmatrix.dtree)[1] == 1 & row.names(confmatrix.dtree) == "2.FALSE") {
+  if (dim(confmatrix.dtree)[1] == 1 & row.names(confmatrix.dtree)[1] == "2.FALSE") {
     acc.dtree <- (0 + confmatrix.dtree[1, 2]) / sum(colSums(confmatrix.dtree))
-    }
+  }
   else { 
     acc.dtree <- (confmatrix.dtree[1, 1] + confmatrix.dtree[2, 2]) / sum(colSums(confmatrix.dtree))
-    }
+  }
 }
 
 # calculate error
@@ -246,7 +250,7 @@ confmatrix.nb <- with(pred.nb, table(prediction.reorder, outcome.reorder))
 
 # calculate accuracy
 {
-  if (dim(confmatrix.nb)[1] == 1 & row.names(confmatrix.nb) == "2.FALSE") {
+  if (dim(confmatrix.nb)[1] == 1 & row.names(confmatrix.nb)[1] == "2.FALSE") {
     acc.nb <- (0 + confmatrix.nb[1, 2]) / sum(colSums(confmatrix.nb))
   }
   else { 
@@ -308,7 +312,7 @@ confmatrix.tan <- with(pred.tan, table(prediction.reorder, outcome.reorder))
 
 # calculate accuracy
 {
-  if (dim(confmatrix.tan)[1] == 1 & row.names(confmatrix.tan) == "2.FALSE") {
+  if (dim(confmatrix.tan)[1] == 1 & row.names(confmatrix.tan)[1] == "2.FALSE") {
     acc.tan <- (0 + confmatrix.tan[1, 2]) / sum(colSums(confmatrix.tan))
   }
   else { 

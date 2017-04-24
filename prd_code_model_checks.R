@@ -89,5 +89,42 @@ round(max((acc.logit + acc.ci.logit), (acc.dtree + acc.ci.dtree),
 round(min((acc.logit - acc.ci.logit), (acc.dtree - acc.ci.dtree), 
                      (acc.nb - acc.ci.nb), (acc.tan - acc.ci.tan)) * 100, 3)
 
+# check confusion matrices
+confmatrix.logit
+confmatrix.dtree
+confmatrix.nb
+confmatrix.tan
+confmatrix.svm
+confmatrix.rf
 
+# check roc plot
+roc.plot
 
+# check precision-recall plot
+precrec.plot
+
+# check logistic regression summary
+model.logit %>% summary
+df.logit <- data.frame(cbind(row.names(coef(summary(model.logit))), coef(summary(model.logit))))
+names(df.logit) <- c("variable", "estimate", "std.error", "z.value", "p.value")
+df.logit$estimate <- round(as.numeric(as.character(df.logit$estimate)), 5)
+df.logit$exp.estimate <- round(exp(df.logit$estimate), 5)
+df.logit$p.value <- round(as.numeric(as.character(df.logit$p.value)), 5)
+df.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)
+df.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)  
+  
+model.select.logit <- glm(data = model.data.train.base, outcome ~ age + race + education +
+                                                                  fam.hist.diabetes + high.blood.pressure +
+                                                                  waist.size,
+                          family = binomial(link =  "logit"))
+
+model.select.logit %>% summary  
+df.select.logit <- data.frame(cbind(row.names(coef(summary(model.select.logit))), coef(summary(model.select.logit))))
+names(df.select.logit) <- c("variable", "estimate", "std.error", "z.value", "p.value")
+df.select.logit$estimate <- round(as.numeric(as.character(df.select.logit$estimate)), 5)
+df.select.logit$exp.estimate <- round(exp(df.select.logit$estimate), 5)
+df.select.logit$p.value <- round(as.numeric(as.character(df.select.logit$p.value)), 5)
+df.select.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)
+df.select.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)  
+
+  
