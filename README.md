@@ -41,6 +41,7 @@ prd_code_model.R requires the following R libraries:
 	library(randomForest)
 	library(ROCR)
 	library(ggplot2)
-Each .R file can run independently. The final dataset from extract is uploaded as a csv and is used as the initial dataset in transform. The final dataset from transform is uploaded as a csv and is used as the modeling dataset in model. The complete cases (_cc) dataset is not used at this time. The runtime on prd_code_data_extract.R is about 5 minutes with the downloads accounting for most of the time. The runtime on prd_code_data_transform.R is about 10 minutes with the imputation accounting for the most time. The runtime on prd_code_model.R is about 5 minutes with svm accounting for the most time.
+
+Each .R file can run independently. The final dataset from extract is uploaded as a csv and is used as the initial dataset in transform. The final dataset from transform is uploaded as a csv and is used as the modeling dataset in model. The complete cases (\_cc) dataset is not used at this time. The runtime on prd_code_data_extract.R is about 5 minutes with the downloads accounting for most of the time. The runtime on prd_code_data_transform.R is about 10 minutes with the imputation accounting for the most time. The runtime on prd_code_model.R is about 5 minutes with svm accounting for the most time.
 
 If the secondary would like to jump right to the modeling component of the project, run prd_code_model.R.
