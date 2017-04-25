@@ -24,7 +24,7 @@
 
 \begin{document}
 
-\title{Heinz 95-845: \\Using Machine Learning to Predict Undiagnosed Diabetes \\in Individuals in the NHANES Dataset}
+\title{Heinz 95-845: \\Using Machine Learning to Predict Undiagnosed Diabetes \\in the NHANES Dataset}
 
 \author{\name Kevin McGrady \email kevinmcg@andrew.cmu.edu \\
        \addr Heinz College\\
@@ -45,46 +45,45 @@ Yu et al. used support vector machines to classify individuals into diabetes and
 
 In contrast, this analysis applies multiple machine learning methods to execute a classification task that is strictly focused on the prediction of undiagnosed diabetes. Yu and Omogbai sought to assign the correct label between (A) diagnosed or undiagnosed diabetes versus pre-diabetes or no diabetes and (B) undiagnosed diabetes or pre-diabetes versus no diabetes. Dall had a multi-class prediction, assigning no diabetes, pre-diabetes, and undiagnosed diabetes. Jain estimated individual level-risk of diabetes.
 
-The paper layout is as follows: 
-Background (Section 2), Model (Section 3), Methods (Section 4), Outcome Selection (Section 4.1), Data Extraction (Section 4.2), Feature Choices (Section 4.3), Comparison Methods (Section 4.4), Evaluation Criteria (Section 4.5), Results (Section 5), Discussion (Section 6), and Conclusion (Section 7). 
+In Section 2, Background, information is provided on diabetes, machine learning, and NHANES. In Section 3, Model, information is provided on the selected machine learning algorithms. 
+
+The layout of the paper is as follows:
+Background (Section 2), Model (Section 3), Methods (Section 4), Results (Section 5), Discussion (Section 6), and \\Conclusion (Section 7). 
 
 \section{Background} \label{background}
 Diabetes is the common name for the metabolic disease, diabetes mellitus. The disease arises from problems within the relationship between the pancreas, insulin, glucose (sugar), the bloodstream, and the cells within the bloodstream. An improper balance of blood sugar can have many deleterious effects. There are three primary forms of diabetes: Type 1, Type 2, and gestational [8-10]. For this analysis, there is no differentiation made between Type 1 and Type 2 diabetes. Gestational diabetes is not included. 
 
 Machine learning, in this application, entails solving a classification task. Computer algorithms are employed to predict whether to classify an individual as an undiagnosed diabetic or not. For this study, six different algorithms are applied. More information on the types of algorithms used in this study can be found in Section 3, Model. 
 
-NHANES is the National Health and Nutrition Examination Survey issued by the National Center for Health Statistics, which is part of the Centers for Disease Control and Prevention [11]. For more information on the NHANES dataset, refer to the Sections 4-4.3. 
+NHANES is the National Health and Nutrition Examination Survey issued by the National Center for Health Statistics, which is part of the Centers for Disease Control and Prevention [11]. The NHANES components selected for this study were questionnaire, laboratory, demographics, and examination. For more information on NHANES data subset used in this analysis, refer to Sections 4-4.3. 
 
-\section{Your Model Name Here} \label{model}
-This section describes your model and references the notation you introduced in the Background Section. \textbf{Figures are definitely helpful here}, so that someone who is in your area can visualize how your approach is novel, and someone who is not in your area can visualize what you are doing.
+\section{Model} \label{model}
+This analysis applies logistic regression, decision tree, naive bayes, tree augmented naive bayes, support vector machines, and random forest algorithms to the task of predicting which individuals have undiagnosed diabetes. The entirety of the code is written in the R Project for Statistical Computing. The libraries used are as follows: stats, rpart, bnlearn, e1071, and randomForest. Documentation for these libraries can be found at \url{https://cran.r-project.org/web/packages}. All code for this project is available at \url{https://github.com/95845k/project_rnhanes_dm}.
 
-If you introduce new mathematical or statistical methods, use the terminology you defined in Section \ref{background} and define your model. Give the technical details and remember: do be precise and do be concise.
-
-If you are combining existing methods, then you don't need to provide a ton of detail: feel free to just cite other packages and papers and tell us how you put them together.  
-
-If you developed new code that does not (should not) contain sensitive or private information, include a reference, e.g.:
-
-`` Code is available at \url{http://my.github.page.com} ''
-
-\section{Experimental Setup} \label{experiment}
-\emph{Note: if the paper is more about the application than the method, this Section may be entitled Methods and appear before Section \ref{model}}
-
-By reading the Experimental Setup, your reader should have the information necessary to replicate the study.
-
-Describe the cohort/data. Provide information about the population, the inclusion and exclusion criteria, what data were extracted, how features were processed, etc. In fact, you may want the following headings. \textbf{A flow chart can be very helpful} to illustrate the experimental setup, study design, inclusion/exclusion process, etc.
-
-For more clinical application papers, each of the sections above might be several paragraphs or pages because we really want to understand the setting.
-
-\subsection{Cohort Selection} 
-Describe how the samples you used were selected to form your cohort and also to provide cohort descriptive statistics. In methodologic papers, the ``Table 1'' describing the population by covariate summary statistics goes here. In application papers, ``Table 1'' leads the Results Section. Relevant information about the study design, such how cases and controls were identified, goes here. See Section \ref{results} for an example of how to build a table in LaTeX.
+\section{Methods} \label{methods}
+The following subsections explain how the data was extracted (4.1), how the primary outcome was derived (4.2), how features were selected (4.3), how the data was transformed (4.4), and how the models were evaluated (4.5-4.6). 
 
 \subsection{Data Extraction} 
-Describe the pipeline from raw data to processed data. Figures can be helpful. What assumptions did you make? How did you deal with missing data? Do not place interpretations here except possibly for short justification phrases. Longer discussions about the assumption you made go in the Discussion Section.
+Data for this project was extracted from NHANES using the R library RNHANES [12]. Selected files were downloaded from the period 1999-2000 through 2013-2014 (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_extract.R}. Survey response codes were re-coded to response meanings and checked (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_extract_checks.R}. After joining all of the datasets, 82,091 records were present. 
+
+\subsection{Outcome Derivation} 
+Following Yu, the study dataset was filtered individuals aged 20 and above who were not pregnant at the time of the survey [3]. The age filter eliminated 38,298 records and following that, the pregnancy filter removed 1,416. 
+
+The primary outcome was determined by both questionnaire and laboratory results. If the response was anything other than "No" to the question, "Other than during pregnancy, have you ever been told by a doctor or health professional that you have diabetes?" then the record was removed. This question posed as the proxy for diabetes diagnosis. The study dataset included only those individuals that did not have a diabetes diagnosis. The result of this question removed 5,757 records. To determine whether an individual had diabetes three laboratory tests were employed: fasting plasma glucose (FPG), A1c, and oral glucose tolerance test (OGTT). Following Dall, diabetes was defined as having either FPG greater than or equal 126 or A1c greater than or equal to 6.5 or OGTT greater than or equal to 200 [5]. If an individual did not have any of the three lab values present, then that individual record was eliminated from the dataset. This removed 3,527 records. Those that answered "No" to diagnosis and had a lab value in those ranges were considered to be undiagnosed diabetics. The final study dataset contained 33,093 records. 
 
 \subsection{Feature Choices} 
+Describe the data. Provide information about the population, the inclusion and exclusion criteria, what data were extracted, how features were processed, etc.
+
 What features were used? What conversions were necessary? What assumptions (e.g. i.i.d.) are made? with how you might have converted the raw data into features that were used in your algorithm. 
 
+Describe how the samples you used were selected to form your cohort and also to provide cohort descriptive statistics. In methodologic papers, the ``Table 1'' describing the population by covariate summary statistics goes here. In application papers, ``Table 1'' leads the Results Section. Relevant information about the study design, such how cases and controls were identified, goes here. See Section \ref{results} for an example of how to build a table in LaTeX.
+
+
+\subsection{Data Transformation} 
+How did you deal with missing data? 
+
 \subsection{Comparison Methods}
+train/test
 To evaluate your model, often times you will compare against existing models.
 If so, include them here with a brief description, citation, and any tweaks you made for your experiment.
 
@@ -160,6 +159,7 @@ Build suspense for what your next extension to this method would be.
 \item http://www.webmd.com/diabetes/guide/diabetes-basics
 \item https://my.clevelandclinic.org/health/articles/diabetes-mellitus-an-overview
 \item https://www.cdc.gov/nchs/nhanes/about\_nhanes.htm
+\item https://github.com/SilentSpringInstitute/RNHANES/blob/master/vignettes/introduction.Rmd
 \end{enumerate}
 
 
