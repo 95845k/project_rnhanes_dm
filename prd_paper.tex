@@ -61,29 +61,26 @@ NHANES is the National Health and Nutrition Examination Survey issued by the Nat
 This analysis applies logistic regression, decision tree, naive bayes, tree augmented naive bayes, support vector machines, and random forest algorithms to the task of predicting which individuals have undiagnosed diabetes. The entirety of the code is written in the R Project for Statistical Computing. The libraries used are as follows: stats, rpart, bnlearn, e1071, and randomForest. Documentation for these libraries can be found at \url{https://cran.r-project.org/web/packages}. All code for this project is available at \url{https://github.com/95845k/project_rnhanes_dm}.
 
 \section{Methods} \label{methods}
-The following subsections explain how the data was extracted (4.1), how the primary outcome was derived (4.2), how features were selected (4.3), how the data was transformed (4.4), and how the models were evaluated (4.5-4.6). 
+The following subsections explain how the data was extracted (4.1), how the primary outcome was derived (4.2), how features were selected and transformed (4.3), and how the models were evaluated (4.4-4.5). 
 
 \subsection{Data Extraction} 
-Data for this project was extracted from NHANES using the R library RNHANES [12]. Selected files were downloaded from the period 1999-2000 through 2013-2014 (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_extract.R}. Survey response codes were re-coded to response meanings and checked (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_extract_checks.R}. After joining all of the datasets, 82,091 records were present. 
+Data for this project was extracted from NHANES using the R library RNHANES [12]. Selected files were downloaded from the period 1999-2000 through 2013-2014 (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_extract.R}. Survey response codes were re-coded to response descriptions and checked (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_extract_checks.R}. After joining all of the datasets, 82,091 records were present. 
 
 \subsection{Outcome Derivation} 
 Following Yu, the study dataset was filtered individuals aged 20 and above who were not pregnant at the time of the survey [3]. The age filter eliminated 38,298 records and following that, the pregnancy filter removed 1,416. 
 
-The primary outcome was determined by both questionnaire and laboratory results. If the response was anything other than "No" to the question, "Other than during pregnancy, have you ever been told by a doctor or health professional that you have diabetes?" then the record was removed. This question posed as the proxy for diabetes diagnosis. The study dataset included only those individuals that did not have a diabetes diagnosis. The result of this question removed 5,757 records. To determine whether an individual had diabetes three laboratory tests were employed: fasting plasma glucose (FPG), A1c, and oral glucose tolerance test (OGTT). Following Dall, diabetes was defined as having either FPG greater than or equal 126 or A1c greater than or equal to 6.5 or OGTT greater than or equal to 200 [5]. If an individual did not have any of the three lab values present, then that individual record was eliminated from the dataset. This removed 3,527 records. Those that answered "No" to diagnosis and had a lab value in those ranges were considered to be undiagnosed diabetics. The final study dataset contained 33,093 records. 
+The primary outcome was determined by both questionnaire and laboratory results. If the response was anything other than "No" to the question, "Other than during pregnancy, have you ever been told by a doctor or health professional that you have diabetes?" then the record was removed. This question posed as the proxy for diabetes diagnosis. The study dataset included only those individuals that did not have a diabetes diagnosis. The result of this question removed 5,757 records. To determine whether an individual had diabetes three laboratory tests were employed: fasting plasma glucose (FPG), A1c, and oral glucose tolerance test (OGTT). Following Dall, diabetes was defined as having either FPG greater than or equal 126 or A1c greater than or equal to 6.5 or OGTT greater than or equal to 200 [5]. If an individual did not have any of the three lab values present, then that individual record was eliminated from the dataset. This removed 3,527 records. Those that answered "No" to diagnosis and had a lab value in those ranges were considered to be undiagnosed diabetics. 
+
+The final study dataset contained 33,093 records. The population therein is non-pregnant individuals age 20 or over in the NHANES dataset between 1999 and 2014, who have not been diagnosed with diabetes, and who had diabetes laboratory test results. The outcome is binary: undiagnosed diabetic or not. (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_transform.R}
 
 \subsection{Feature Choices} 
-Describe the data. Provide information about the population, the inclusion and exclusion criteria, what data were extracted, how features were processed, etc.
+Model features were based on a review of the literature [3-7, 13-14]. The features chosen to predict which individuals had undiagnosed diabetes were age, gender, race/ethnicity, education level, family history of diabetes, body mass index, waist circumference, high blood pressure, high cholesterol, average number of alcoholic drinks consumed, smoking status, and number of hours of sleep. Age, body mass index, waist circumference, average number of alcoholic drinks consumed, and number of hours of sleep were employed as real values. Race/ethnicity was transformed into four categories: hispanic, white, black, and other. Education was transformed into three levels: no high school degree, high school degree, and college degree. High school degree includes those individuals with associates degrees. Family history of diabetes, high blood pressure, high cholesterol, and smoking status were treated as binary. For smoking, responses of "Every day" or "Some days" were coded as true values. 
 
-What features were used? What conversions were necessary? What assumptions (e.g. i.i.d.) are made? with how you might have converted the raw data into features that were used in your algorithm. 
-
-Describe how the samples you used were selected to form your cohort and also to provide cohort descriptive statistics. In methodologic papers, the ``Table 1'' describing the population by covariate summary statistics goes here. In application papers, ``Table 1'' leads the Results Section. Relevant information about the study design, such how cases and controls were identified, goes here. See Section \ref{results} for an example of how to build a table in LaTeX.
-
-
-\subsection{Data Transformation} 
-How did you deal with missing data? 
+In addition to the upfront missing values, response descriptions of "Refused" and "Don't Know" were treated as missing. There was no evidence to suggest that the upfront missing values of any feature were missing not at random (MNAR). Additional features addressing missingness were deemed to be non-essential for this study. If the number of "Refused" and "Don't Know" responses had been more substantial, there perhaps would have been more of a case for MNAR. As it stands, when excluding "Don't Know" for family history, these responses made up less than 1 percent of the data. The imputation method for values missing at random used in this study was multivariate imputation by chained equations. The mice package in R provided the algorithm. Three imputations and three iterations were the settings. Results were pooled. The most frequent value was used for non-real values. In case of a tie, the first value was taken. The mean imputed value was used for real values. (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_transform.R}
 
 \subsection{Comparison Methods}
-train/test
+train/validate/test
+with how you might have converted the raw data into features that were used in your algorithm. 
 To evaluate your model, often times you will compare against existing models.
 If so, include them here with a brief description, citation, and any tweaks you made for your experiment.
 
@@ -99,8 +96,6 @@ Those descriptions belong in Section \ref{experiment}.
 
 Typically there are multiple parts and subparts of your study.
 Use subsections to report the results.
-
-\subsection{Results on Application A} 
 
 Give us some numbers about how well your method works, especially in comparison to some baselines.
 You should provide a summary of the results in the text, as well as in tables (such as table~\ref{tab:example}) and figures (such as figure~\ref{fig:example}).  
@@ -126,10 +121,6 @@ You may use subfigures/wrapfigures (LaTeX packages) so that figures don't have t
   \label{fig:example} 
 \end{figure} 
 
-\subsection{Results on Application B} 
-
-Did more than one experiment type?
-
 \section{Discussion and Related Work} 
 
 This is where you characterize the outcomes of your method and draw conclusions from you experiment.
@@ -146,20 +137,22 @@ Build suspense for what your next extension to this method would be.
 % ACKNOWLEDGEMENTS ONLY GO IN THE CAMERA-READY, NOT THE SUBMISSION
 % \acks{Many thanks to all collaborators and funders!}
 
-\section{Bibliography}
+\section{References}
 \begin{enumerate}
-\item http://www.diabetes.org/diabetes-basics/statistics
+\item \url{http://www.diabetes.org/diabetes-basics/statistics}
 \item American Diabetes Association. "Standards of medical care in diabetes - 2013." Diabetes care 36. Supplement 1 (2013): S13.
 \item Yu, Wei, et al. "Application of support vector machine modeling for prediction of common diseases: the case of diabetes and pre-diabetes." BMC Medical Informatics and Decision Making 10.1 (2010): 16.
 \item Omogbai, Aileme. "Application of multiview techniques to NHANES dataset." arXiv preprint arXiv:1608.04783 (2016).
 \item Dall, Timothy M., et al. "Detecting type 2 diabetes and prediabetes among asymptomatic adults in the United States: modeling American Diabetes Association versus US Preventive Services Task Force diabetes screening guidelines." Population health metrics 12.1 (2014): 12.
 \item Jain, Deepti, and Divakar Singh. "A Neural Network based Approach for the Diabetes Risk Estimation." International Journal of Computer Applications 73.10 (2013).
 \item Barber, Shaun R., et al. "Risk assessment tools for detecting those with pre-diabetes: a systematic review." Diabetes research and clinical practice 105.1 (2014): 1-13.
-\item https://en.wikipedia.org/wiki/Diabetes\_mellitus
-\item http://www.webmd.com/diabetes/guide/diabetes-basics
-\item https://my.clevelandclinic.org/health/articles/diabetes-mellitus-an-overview
-\item https://www.cdc.gov/nchs/nhanes/about\_nhanes.htm
-\item https://github.com/SilentSpringInstitute/RNHANES/blob/master/vignettes/introduction.Rmd
+\item \url{https://en.wikipedia.org/wiki/Diabetes_mellitus}
+\item \url{http://www.webmd.com/diabetes/guide/diabetes-basics}
+\item \url{https://my.clevelandclinic.org/health/articles/diabetes-mellitus-an-overview}
+\item \url{https://www.cdc.gov/nchs/nhanes/about_nhanes.htm}
+\item \url{https://cran.r-project.org/web/packages/RNHANES/vignettes/introduction.html}
+\item Stiglic, Gregor, and Majda Pajnkihar. "Evaluation of major online diabetes risk calculators and computerized predictive models." PloS one 10.11 (2015): e0142827.
+\item Knutson, Kristen L., and Eve Van Cauter. "Associations between sleep loss and increased risk of obesity and diabetes." Annals of the New York Academy of Sciences 1129.1 (2008): 287-304.
 \end{enumerate}
 
 
