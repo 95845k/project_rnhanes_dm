@@ -103,6 +103,14 @@ roc.plot
 # check precision-recall plot
 precrec.plot
 
+# check logit threshold values
+data.frame(tpr = roc.logit@y.values[[1]], 
+           fpr = roc.logit@x.values[[1]], 
+           cutoff = roc.logit@alpha.values[[1]]) %>% 
+  mutate(metric = round(tpr / fpr, 5)) %>% 
+  arrange(desc(metric)) %>% 
+  filter(tpr > 0.75, fpr < 0.305)
+
 # check logistic regression summary
 model.logit %>% summary
 df.logit <- data.frame(cbind(row.names(coef(summary(model.logit))), coef(summary(model.logit))))
@@ -127,4 +135,4 @@ df.select.logit$p.value <- round(as.numeric(as.character(df.select.logit$p.value
 df.select.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)
 df.select.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)  
 
-  
+

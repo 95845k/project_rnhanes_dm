@@ -58,10 +58,10 @@ Machine learning, in this application, entails solving a classification task. Co
 NHANES is the National Health and Nutrition Examination Survey issued by the National Center for Health Statistics, which is part of the Centers for Disease Control and Prevention [11]. The NHANES components selected for this study were questionnaire, laboratory, demographics, and examination. For more information on NHANES data subset used in this analysis, refer to Sections 4-4.3. 
 
 \section{Model} \label{model}
-This analysis applies logistic regression, decision tree, naive bayes, tree augmented naive bayes, support vector machines, and random forest algorithms to the task of predicting which individuals have undiagnosed diabetes. The entirety of the code is written in the R Project for Statistical Computing. The libraries used are as follows: stats, rpart, bnlearn, e1071, and randomForest. Documentation for these libraries can be found at \url{https://cran.r-project.org/web/packages}. All code for this project is available at \url{https://github.com/95845k/project_rnhanes_dm}.
+This analysis applies logistic regression, decision tree, naive bayes, tree augmented naive bayes, support vector machines, and random forest algorithms to the task of predicting which individuals have undiagnosed diabetes. The entirety of the code is written in the R Project for Statistical Computing. The libraries used are as follows: stats, rpart, bnlearn, e1071, and randomForest. Each algorithm was used "as is" or "off the shelf"; no hyperparameter tuning was conducted. Neural network algorithms were not applied to this dataset as that level of complexity did not seem appropriate for the relatively small dataset and the R implementation of neural networks is suboptimal. Documentation for these libraries used in this study can be found at \url{https://cran.r-project.org/web/packages}. All code for this project is available at \url{https://github.com/95845k/project_rnhanes_dm}.
 
 \section{Methods} \label{methods}
-The following subsections explain how the data was extracted (4.1), how the primary outcome was derived (4.2), how features were selected and transformed (4.3), and how the models were evaluated (4.4-4.5). 
+The following subsections explain how the data was extracted (4.1), how the primary outcome was derived (4.2), how features were selected and transformed (4.3), and how the models were evaluated (4.4). 
 
 \subsection{Data Extraction} 
 Data for this project was extracted from NHANES using the R library RNHANES [12]. Selected files were downloaded from the period 1999-2000 through 2013-2014 (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_extract.R}. Survey response codes were re-coded to response descriptions and checked (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_extract_checks.R}. After joining all of the datasets, 82,091 records were present. 
@@ -78,15 +78,12 @@ Model features were based on a review of the literature [3-7, 13-14]. The featur
 
 In addition to the upfront missing values, response descriptions of "Refused" and "Don't Know" were treated as missing. There was no evidence to suggest that the upfront missing values of any feature were missing not at random (MNAR). Additional features addressing missingness were deemed to be non-essential for this study. If the number of "Refused" and "Don't Know" responses had been more substantial, there perhaps would have been more of a case for MNAR. As it stands, when excluding "Don't Know" for family history, these responses made up less than 1 percent of the data. The imputation method for values missing at random used in this study was multivariate imputation by chained equations. The mice package in R provided the algorithm. Three imputations and three iterations were the settings. Results were pooled. The most frequent value was used for non-real values. In case of a tie, the first value was taken. The mean imputed value was used for real values. (see: \url{https://github.com/95845k/project_rnhanes_dm/blob/master/prd_code_data_transform.R}
 
-\subsection{Comparison Methods}
-train/validate/test
-with how you might have converted the raw data into features that were used in your algorithm. 
-To evaluate your model, often times you will compare against existing models.
-If so, include them here with a brief description, citation, and any tweaks you made for your experiment.
+For the naive bayes and tree augmented naive bayes algorithms, every features are required to be discrete. A "discretize" function was applied to the dataset. This transformed the real valued features into discrete buckets. 
 
 \subsection{Evaluation Criteria}
-Evaluation methods belong here as well.
-Perhaps you used accuracy and the AUROC--explain why these are most useful measures of the outcome.
+In order to evaluate the performance of the selected machine learning algorithms on this classification task, the study dataset was split into training and testing datasets. Seventy percent of the data was used for training (n = 23,165). Thirty percent was reserved for future testing (n = 9,928). The training set was then further divided into a base training dataset and a validation dataset. Seventy percent of the training data was used a on base training set (n = 16,215). Thirty percent was used for validation (n = 6,950). The first goal of evaluation is have the models perform well on the validation dataset. The best performing model would then be selected and tested using the testing dataset. 
+
+Because of class imbalance, only five percent of the individual records are represented as undiagnosed diabetes, accuracy is a poor measure of evaluation. If a model predicts "no diabetes" every time, the model will be correct approximately 95 percent of the time. The true positive rate or recall, measuring how many correct predictions of undiagnosed diabetes were made divided by the the actual number of undiagnosed diabetes records, is a better measure. In addition, the false positive rate, and precision or positive predictive value will be evaluated. Precision is the number of correct predictions of undiagnosed diabetes divided by the number of undiagnosed diabetes predictions made. These measures will be illustrated in confusion matrices, receiver operator characteristic (ROC) curves, and precision-recall curves. For ROC curves, the area under the curve (AUC) will be evaluated. 
 
 \section{Results} \label{results}
 
@@ -98,21 +95,8 @@ Typically there are multiple parts and subparts of your study.
 Use subsections to report the results.
 
 Give us some numbers about how well your method works, especially in comparison to some baselines.
-You should provide a summary of the results in the text, as well as in tables (such as table~\ref{tab:example}) and figures (such as figure~\ref{fig:example}).  
+You should provide a summary of the results in the text, as well as in figures (such as figure~\ref{fig:example}).  
 
-You may use subfigures/wrapfigures (LaTeX packages) so that figures don't have to span the whole page or multiple figures are side by side.
-
-\begin{table}[htbp]
-  \centering 
-  \begin{tabular}{lclc} 
-    Method & Outcome (\%) \\ 
-    \hline \\[-11pt]
-    Us & 20.1 \\ 
-    Baseline & 18.2 \\ \hline 
-  \end{tabular}
-  \label{tab:example} 
-    \caption{Outcome by method used. These are our results.} 
-\end{table}
 
 \begin{figure}[htbp]
   \centering 
