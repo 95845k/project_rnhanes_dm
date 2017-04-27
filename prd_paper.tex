@@ -83,7 +83,14 @@ For the naive bayes and tree augmented naive bayes algorithms, every features ar
 \subsection{Evaluation Criteria}
 In order to evaluate the performance of the selected machine learning algorithms on this classification task, the study dataset was split into training and testing datasets. Seventy percent of the data was used for training (n = 23,165). Thirty percent was reserved for future testing (n = 9,928). The training set was then further divided into a base training dataset and a validation dataset. Seventy percent of the training data was used a on base training set (n = 16,215). Thirty percent was used for validation (n = 6,950). The first goal of evaluation is have the models perform well on the validation dataset. The best performing model would then be selected and tested using the testing dataset. 
 
-Because of class imbalance, only five percent of the individual records are represented as undiagnosed diabetes, accuracy is a poor measure of evaluation. If a model predicts "no diabetes" every time, the model will be correct approximately 95 percent of the time. The true positive rate or recall, measuring how many correct predictions of undiagnosed diabetes were made divided by the the actual number of undiagnosed diabetes records, is a better measure. In addition, the false positive rate, and precision or positive predictive value will be evaluated. Precision is the number of correct predictions of undiagnosed diabetes divided by the number of undiagnosed diabetes predictions made. These measures will be illustrated in confusion matrices, receiver operator characteristic (ROC) curves, and precision-recall curves. For ROC curves, the area under the curve (AUC) will be evaluated. 
+\begin{figure}[htbp]
+  \centering 
+  \includegraphics[width=6in]{tableone.png} 
+ % \caption{Example smile graphic.}
+  \label{fig:example} 
+\end{figure} 
+
+Less than five percent (775/16,215 in the base training set) of the individual records are represented as undiagnosed diabetes. Because of this class imbalance, accuracy is a poor measure of evaluation. If a model predicts "no diabetes" every time, the model will be correct approximately 95 percent of the time. The true positive rate or recall, measuring how many correct predictions of undiagnosed diabetes were made divided by the the actual number of undiagnosed diabetes records, is a better measure. In addition, the false positive rate, and precision or positive predictive value will be evaluated. Precision is the number of correct predictions of undiagnosed diabetes divided by the number of undiagnosed diabetes predictions made. These measures will be illustrated in confusion matrices, receiver operator characteristic (ROC) curves, and precision-recall curves. For ROC curves, the area under the curve (AUC) will be evaluated. 
 
 \section{Results} \label{results}
 
@@ -96,14 +103,6 @@ Use subsections to report the results.
 
 Give us some numbers about how well your method works, especially in comparison to some baselines.
 You should provide a summary of the results in the text, as well as in figures (such as figure~\ref{fig:example}).  
-
-
-\begin{figure}[htbp]
-  \centering 
-  \includegraphics[width=1.5in]{smile.jpeg} 
-  \caption{Example smile graphic.}
-  \label{fig:example} 
-\end{figure} 
 
 \section{Discussion and Related Work} 
 
