@@ -3,6 +3,7 @@
 # load necessary libraries
 library(readr)
 library(dplyr)
+library(tableone)
 library(rpart)
 library(bnlearn)
 library(e1071)
@@ -87,6 +88,21 @@ model.data.train.base <- model.data.train.base %>% select(-index)
 model.data.train.validate <- model.data.train.validate %>% select(-index)
 model.data.test <- model.data.test %>% select(-index)
 model.data.shuffle <- model.data.shuffle %>% select(-index)
+
+
+# create vector of table one variables
+tableone.vars <- model.data.train.base %>% select(-outcome) %>% names
+
+# create table one stratified by outcome
+tableone.tbl1 <- CreateTableOne(data = model.data.train.base, 
+                                vars = tableone.vars, 
+                                strata = "outcome")
+
+# create csv-ready version of table one
+tableone.p <- print(tableone.tbl1, showAllLevels = T, quote = F, noSpaces = T, printToggle = F)
+
+# write to csv for further formatting
+##write.csv(tableone.p, "tableone.csv")
 
 ## Logit
 # create logit model from training-base dataset
