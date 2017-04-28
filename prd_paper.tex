@@ -19,7 +19,7 @@
 % Heading arguments are {volume}{year}{pages}{submitted}{published}{author-full-names}
 
 % Short headings should be running head and authors last names
-\ShortHeadings{95-845: MLHC Article}{Lastname and Lastname}
+\ShortHeadings{95-845: MLHC Final Project}{McGrady}
 \firstpageno{1}
 
 \begin{document}
@@ -87,31 +87,62 @@ In order to evaluate the performance of the selected machine learning algorithms
   \centering 
   \includegraphics[width=6in]{tableone.png} 
  % \caption{Example smile graphic.}
-  \label{fig:example} 
+  \label{fig:1} 
 \end{figure} 
 
-Less than five percent (775/16,215 in the base training set) of the individual records are represented as undiagnosed diabetes. Because of this class imbalance, accuracy is a poor measure of evaluation. If a model predicts "no diabetes" every time, the model will be correct approximately 95 percent of the time. The true positive rate or recall, measuring how many correct predictions of undiagnosed diabetes were made divided by the the actual number of undiagnosed diabetes records, is a better measure. In addition, the false positive rate, and precision or positive predictive value will be evaluated. Precision is the number of correct predictions of undiagnosed diabetes divided by the number of undiagnosed diabetes predictions made. These measures will be illustrated in confusion matrices, receiver operator characteristic (ROC) curves, and precision-recall curves. For ROC curves, the area under the curve (AUC) will be evaluated. 
+Prior to any statistics or application of machine learning, Table 1 provides some clues as to what separates the "no diabetes" group from the "undiagnosed diabetes group." Older, male, Hispanic non-smokers with larger waist sizes, no high school degree, a family history of diabetes, high blood pressure, and high cholesterol appear to be more likely to be undiagnosed diabetics.  
+
+Less than five percent (775/16,215 in the base training set) of the individual records are represented as undiagnosed diabetes. Because of this class imbalance, accuracy is a poor measure of evaluation. If a model predicts "no diabetes" every time, the model will be correct approximately 95 percent of the time. The true positive rate or recall, measuring how many correct predictions of undiagnosed diabetes were made divided by the the actual number of undiagnosed diabetes records, is a better measure. In addition, the false positive rate, and precision or positive predictive value will be evaluated. Precision is the number of correct predictions of undiagnosed diabetes divided by the number of undiagnosed diabetes predictions made. These measures will be illustrated in receiver operator characteristic (ROC) curves, precision-recall curves, and confusion matrices. For ROC curves, the area under the curve (AUC) will be evaluated. Both the ROC and the precision-recall curves calculate their respective metrics over a range of probability thresholds. The confusion matrix displays the prediction and outcome relationship at one probability cutoff. A probability threshold of fifty percent was used for the confusion matrices in this paper. The model has to return a probability greater than fifty percent in order to classify an individual as an undiagnosed diabetic. Anything less than that, the individual will be classified as having no diabetes.
 
 \section{Results} \label{results}
 
-Present the results here.
-Do not describe how the results were obtained.
-Those descriptions belong in Section \ref{experiment}.
+The results on the training validation set are displayed below. The ROC diagram shows that logistic regression performed the best. The AUC for the logistic regression model was 0.794, which tops the 0.765 AUC of naive bayes and tree augmented naive bayes.
 
-Typically there are multiple parts and subparts of your study.
-Use subsections to report the results.
+\begin{figure}[htbp]
+  \centering 
+  \includegraphics[width=6in]{roc.png} 
+  \label{fig:2} 
+\end{figure} 
 
-Give us some numbers about how well your method works, especially in comparison to some baselines.
-You should provide a summary of the results in the text, as well as in figures (such as figure~\ref{fig:example}).  
+Moving from left to right, the precision-recall curves shows that at most levels of recall, logistic regression is the most precise (is on top). 
+
+\begin{figure}[htbp]
+  \centering 
+  \includegraphics[width=6in]{precrec.png} 
+  \label{fig:3} 
+\end{figure} 
+
+The confusion matrix for logistic regression tells a different story (Table 2). Of the 6,950 records in the training validation set, 372 were undiagnosed diabetes and 6,578 were no diabetes. At the fifty percent threshold, the logistic regression model did not return any predictions of undiagnosed diabetes. The class imbalance was not overcome, and so the model predicted "no diabetes" each and every time for an accuracy of ninety-five percent. This is true for all models with the exception of naive bayes. Naive bayes predicted undiagnosed diabetes 164 times, 28 were true positives and 136 were false positives (Table 3). The true positive rate for logistic regression is 0. The true positive rate for naive bayes is eight percent. The false positive rate for logistic regression is 0. The false positive rate for naive bayes is two percent. 
+
+\begin{figure}[htbp]
+  \centering 
+  \includegraphics[width=6in]{logit_confusion.png} 
+  \label{fig:4} 
+\end{figure} 
+
+\begin{figure}[htbp]
+  \centering 
+  \includegraphics[width=6in]{nb_confusion.png} 
+  \label{fig:5} 
+\end{figure} 
+
+Based on the evidence, logistic regression performed the best. However, as shown in the confusion matrix, the results are rather unsatisfying. Naive bayes offers an alternative, but the true positive rate is not high enough to warrant its selection. Moreover, logistic regression provides more interpretable results. 
+
+\begin{figure}[htbp]
+  \centering 
+  \includegraphics[width=6in]{logit_results.png} 
+  \label{fig:6} 
+\end{figure} 
+
+Much of what appeared in Table 1 has been validated by the results from the logistic regression model (Table 4). Minority races and ethnicities have higher odds of being in the undiagnosed diabetes group. Hispanics are 1.76 times more likely to be undiagnosed diabetics than whites, holding non-race/ethnicity factors constant (p-value = 0.000). Individuals without a high school degree are 1.29 times more likely (p-value = 0.003) to be undiagnosed diabetics than high school graduates, while college graduates are 0.67 times less likely. A family history of diabetes and having high blood pressure also increase the odds, respectively. 
 
 \section{Discussion and Related Work} 
 
-This is where you characterize the outcomes of your method and draw conclusions from you experiment.
-The discussion will build upon the Introduction and the Results sections to synthesize where your contribution brings the field. Discuss any implications of your work. 
-Discuss limitations of your work.
-Are there situations where you should and should not use your method.
-What implications are there on policy making, clinical decision making, or future research activities?
-Remember to contextualize your work with respect to related work and provide references.
+The AUC for the logistic regression model appears to be reasonable. Yu published an AUC of 0.732 for the classification scheme 2, which incorporated both undiagnosed diabetes and prediabetes [3]. The maximum AUC shown reported in Barber for models using logistic regression for pre-diabetes was 0.744 [7]. The significant factors and odds ratios also appear to be reasonable. For undiagnosed diabetes and total prediabetes, Dall reports a 1.97 odds ratio for Hispanics (compared to whites) and a 1.36 odds ratio for having high blood pressure. The contribution of this study is in the focus on the undiagnosed diabetes population, the application of multiple machine learning algorithms, and the missing value imputation (which seems absent in all referenced studies). 
+
+However, the positive predictive value offered by the logistic regression model at a threshold probability of fifty percent is valueless. The true positive rate is zero. In order to achieve a true positive rate of seventy-percent, the threshold probability has to be reduced to under five percent. This also comes at the expense of thirty percent false positive rate. Therefore, I will keep the remaining test set "locked away." 
+
+Further analysis is required before final results can be published. The class imbalance problem must be resolved. Undersampling or oversampling or synthetic minority oversample (SMOTE) are approaches designed to overcome class imbalance [15]. For logistic regression, there is also opportunity to add interaction terms and quadratic variants. Feature reduction, through principal or independent component analysis is an option as are other feature engineering techniques. The missing value imputations could be checked by running the models on a complete case dataset. Following that, there are opportunities for optimizing and hyperparameter tuning of the algorithms as opposed to the "off the shelf" approach used in this study. More models could be explored and applied including boosting algorithms and additional ensemble models. An alternative approach could be implemented - changing the task from classification to regression. Lab values could be scaled and combined for the study dataset and features could be awarded predicted diabetes risk points through linear regression or regression trees. 
 
 \section{Conclusion} 
 Summarize your work one more time, this time assuming the reader has read your paper.
@@ -136,6 +167,7 @@ Build suspense for what your next extension to this method would be.
 \item \url{https://cran.r-project.org/web/packages/RNHANES/vignettes/introduction.html}
 \item Stiglic, Gregor, and Majda Pajnkihar. "Evaluation of major online diabetes risk calculators and computerized predictive models." PloS one 10.11 (2015): e0142827.
 \item Knutson, Kristen L., and Eve Van Cauter. "Associations between sleep loss and increased risk of obesity and diabetes." Annals of the New York Academy of Sciences 1129.1 (2008): 287-304.
+\item \url{https://www.cs.cmu.edu/afs/cs/project/jair/pub/volume16/chawla02a-html/node6.html}
 \end{enumerate}
 
 
