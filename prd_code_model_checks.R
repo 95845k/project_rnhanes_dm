@@ -103,13 +103,18 @@ roc.plot
 # check precision-recall plot
 precrec.plot
 
-# check logit threshold values
-data.frame(tpr = roc.logit@y.values[[1]], 
-           fpr = roc.logit@x.values[[1]], 
-           cutoff = roc.logit@alpha.values[[1]]) %>% 
-  mutate(metric = round(tpr / fpr, 5)) %>% 
-  arrange(desc(metric)) %>% 
-  filter(tpr > 0.75, fpr < 0.305)
+# calculate auc
+auc.logit <- with(pred.logit, prediction(predictions = prediction.prob, labels = outcome)) %>%
+  performance("auc")
+auc.logit@y.values
+
+auc.nb <- with(pred.nb, prediction(predictions = prediction.prob, labels = outcome)) %>%
+  performance("auc")
+auc.nb@y.values
+
+auc.tan <- with(pred.tan, prediction(predictions = prediction.prob, labels = outcome)) %>%
+  performance("auc")
+auc.tan@y.values
 
 # check logistic regression summary
 model.logit %>% summary
@@ -119,8 +124,7 @@ df.logit$estimate <- round(as.numeric(as.character(df.logit$estimate)), 5)
 df.logit$exp.estimate <- round(exp(df.logit$estimate), 5)
 df.logit$p.value <- round(as.numeric(as.character(df.logit$p.value)), 5)
 df.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)
-df.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)  
-  
+
 model.select.logit <- glm(data = model.data.train.base, outcome ~ age + race + education +
                                                                   fam.hist.diabetes + high.blood.pressure +
                                                                   waist.size,
@@ -134,5 +138,13 @@ df.select.logit$exp.estimate <- round(exp(df.select.logit$estimate), 5)
 df.select.logit$p.value <- round(as.numeric(as.character(df.select.logit$p.value)), 5)
 df.select.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)
 df.select.logit %>% tbl_df %>% select(variable, exp.estimate, p.value) %>% filter(p.value < 0.05)  
+
+# check logit threshold values
+data.frame(tpr = roc.logit@y.values[[1]], 
+           fpr = roc.logit@x.values[[1]], 
+           cutoff = roc.logit@alpha.values[[1]]) %>% 
+  mutate(metric = round(tpr / fpr, 5)) %>% 
+  arrange(desc(metric)) %>% 
+  filter(tpr > 0.75, fpr < 0.305)
 
 
