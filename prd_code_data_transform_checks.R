@@ -60,6 +60,9 @@ with(model.data, table(outcome, dm.label, lab.diabetes))
 # summarize model data
 model.data %>% summary
 
+# check gender categories
+with(model.data, table(gender.label, gender.cat))
+
 # check race categories
 with(model.data, table(race.label, race.cat))
 
@@ -77,6 +80,7 @@ with(model.data, table(chol.label, chol.cat))
 
 # check smoking relabel
 with(model.data, table(smoke.label, smoke.cat))
+with(model.data, table(smoke.cat, outcome))
 
 # check age categories
 model.data %>% select(age.value, age.cat) %>% group_by(age.cat) %>% 

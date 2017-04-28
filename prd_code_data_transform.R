@@ -121,6 +121,13 @@ model.data[model.data$dm.label == "No" & model.data$lab.diabetes > 0, "outcome"]
 model.data$outcome <- as.factor(model.data$outcome)
 
 
+# relabel gender
+model.data <- model.data %>% mutate(gender.cat = 
+                                      plyr::mapvalues(gender.label,
+                                                      from = c("Female", "Male"),
+                                                      to = c("Female", "A-Male")))
+
+
 # relabel race/ethnicity
 model.data <- model.data %>% mutate(race.cat = 
                                       plyr::mapvalues(race.label,
@@ -128,7 +135,7 @@ model.data <- model.data %>% mutate(race.cat =
                                                                "Non-Hispanic White", "Non-Hispanic Black",
                                                                "Other Race - Including Multi-Racial"),
                                                       to = c("Hispanic", "Hispanic",
-                                                             "White", "Black",
+                                                             "A-White", "Black",
                                                              "Other")))
 
 
@@ -141,9 +148,9 @@ model.data <- model.data %>% mutate(educ.cat =
                                                                "Some College or AA degree",
                                                                "College Graduate or above",
                                                                "Refused", "Don't Know"),
-                                                      to = c("1-No HS Degree", "1-No HS Degree",
-                                                             "2-HS Degree", "2-HS Degree",
-                                                             "3-College Degree",
+                                                      to = c("No HS Degree", "No HS Degree",
+                                                             "A-HS Degree", "A-HS Degree",
+                                                             "College Degree",
                                                              NA, NA)))
 
 
@@ -194,7 +201,7 @@ model.data <- model.data %>% mutate(bmi.cat =
 
 
 # create model feature dataset
-model.data <- model.data %>% select(outcome, age.value, gender.label, race.cat, educ.cat,
+model.data <- model.data %>% select(outcome, age.value, gender.cat, race.cat, educ.cat,
                                     hist.cat, bmi.value, waist.value, bp.cat, chol.cat, 
                                     alc.value, smoke.cat, sleep.value)
 
