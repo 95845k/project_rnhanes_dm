@@ -39,6 +39,7 @@ prd_code_data_transform.R requires the following R libraries:
 prd_code_model.R requires the following R libraries:
 
 	library(readr)
+	library(tableone)
 	library(dplyr)
 	library(rpart)
 	library(bnlearn)
@@ -50,3 +51,7 @@ prd_code_model.R requires the following R libraries:
 Each .R file can run independently. The final dataset from extract is uploaded as a csv and is used as the initial dataset in transform. The final dataset from transform is uploaded as a csv and is used as the modeling dataset in model. The complete cases (\_cc) dataset is not used at this time. The runtime on prd_code_data_extract.R is about 5 minutes with the downloads accounting for most of the time. The runtime on prd_code_data_transform.R is about 10 minutes with the imputation accounting for the most time. The runtime on prd_code_model.R is about 5 minutes with svm accounting for the most time.
 
 If the secondary would like to jump right to the modeling component of the project, run prd_code_model.R.
+
+The paper is prd_paper.pdf, which was built from prd_paper.tex. NOTE: The .tex file will not be able to be compiled. The packages and figures are not uploaded to github. The .tex is shown just to prove that I did in fact use "TeX" for this report. 
+
+
