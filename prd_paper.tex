@@ -34,8 +34,7 @@
 \maketitle
 
 \begin{abstract}
-  The abstract is the summary of the article. Your potential readers will glance at the abstract to decide
-  if the article is worth reading. Make it good--this is your most-read text!  
+Discovering individuals who have undiagnosed diabetes is a pursuit designed to improve health outcomes. By combining the National Health and Nutrition Examination Survey (NHANES) and a suite of machine learning algorithms this goal can be achieved. This paper produces results that show competitive performance and offers avenues for future enhancement.
 \end{abstract}
 
 \section{Introduction}
@@ -45,10 +44,7 @@ Yu et al. used support vector machines to classify individuals into diabetes and
 
 In contrast, this analysis applies multiple machine learning methods to execute a classification task that is strictly focused on the prediction of undiagnosed diabetes. Yu and Omogbai sought to assign the correct label between (A) diagnosed or undiagnosed diabetes versus pre-diabetes or no diabetes and (B) undiagnosed diabetes or pre-diabetes versus no diabetes. Dall had a multi-class prediction, assigning no diabetes, pre-diabetes, and undiagnosed diabetes. Jain estimated individual level-risk of diabetes.
 
-In Section 2, Background, information is provided on diabetes, machine learning, and NHANES. In Section 3, Model, information is provided on the selected machine learning algorithms. 
-
-The layout of the paper is as follows:
-Background (Section 2), Model (Section 3), Methods (Section 4), Results (Section 5), Discussion (Section 6), and \\Conclusion (Section 7). 
+In Section 2, Background, information is provided on diabetes, machine learning, and NHANES. In Section 3, Model, information is provided on the selected machine learning algorithms. Section 4, Methods, describes the data extraction, outcome derivation, feature selection, and evaluation processes. Section 5 provides the results and Section 6 brings forth a discussion and opportunities for future work. Section 6 is the conclusion. 
 
 \section{Background} \label{background}
 Diabetes is the common name for the metabolic disease, diabetes mellitus. The disease arises from problems within the relationship between the pancreas, insulin, glucose (sugar), the bloodstream, and the cells within the bloodstream. An improper balance of blood sugar can have many deleterious effects. There are three primary forms of diabetes: Type 1, Type 2, and gestational [8-10]. For this analysis, there is no differentiation made between Type 1 and Type 2 diabetes. Gestational diabetes is not included. 
@@ -145,11 +141,7 @@ However, the positive predictive value offered by the logistic regression model 
 Further analysis is required before final results can be published. The class imbalance problem must be resolved. Undersampling or oversampling or synthetic minority oversample (SMOTE) are approaches designed to overcome class imbalance [15]. For logistic regression, there is also opportunity to add interaction terms and quadratic variants. Feature reduction, through principal or independent component analysis is an option as are other feature engineering techniques. The missing value imputations could be checked by running the models on a complete case dataset. Following that, there are opportunities for optimizing and hyperparameter tuning of the algorithms as opposed to the "off the shelf" approach used in this study. More models could be explored and applied including boosting algorithms and additional ensemble models. An alternative approach could be implemented - changing the task from classification to regression. Lab values could be scaled and combined for the study dataset and features could be awarded predicted diabetes risk points through linear regression or regression trees. 
 
 \section{Conclusion} 
-Summarize your work one more time, this time assuming the reader has read your paper.
-Build suspense for what your next extension to this method would be.
-
-% ACKNOWLEDGEMENTS ONLY GO IN THE CAMERA-READY, NOT THE SUBMISSION
-% \acks{Many thanks to all collaborators and funders!}
+This paper has produced contributions to the study and prediction of undiagnosed diabetes. There is further work to be conducted, which will yet further advance the pursuit of improving outcomes at a population health scale. 
 
 \section{References}
 \begin{enumerate}
@@ -170,9 +162,5 @@ Build suspense for what your next extension to this method would be.
 \item \url{https://www.cs.cmu.edu/afs/cs/project/jair/pub/volume16/chawla02a-html/node6.html}
 \end{enumerate}
 
-
-\appendix
-\section*{Appendix A.}
-Some more details about those methods, so we can actually reproduce them.
 
 \end{document}
